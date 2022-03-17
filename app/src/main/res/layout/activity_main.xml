@@ -6,12 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_tomato_stem"
+        app:layout_constraintBottom_toTopOf="@+id/remainMinutesTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25"
+        tools:ignore="ContentDescription" />
+
     <TextView
         android:id="@+id/remainMinutesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00"
-        android:textSize="40sp"
+        android:text="00'"
+        android:textColor="@color/white"
+        android:textSize="80sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/remainSecondsTextView"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -24,11 +37,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00"
+        android:textColor="@color/white"
         android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="@+id/remainMinutesTextView"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@id/remainMinutesTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/remainMinutesTextView"
-        app:layout_constraintTop_toTopOf="@+id/remainMinutesTextView"
         tools:ignore="HardcodedText" />
 
     <!-- Gon : 한 시간을 최대 값으로 할 것이므로 SeekBar max값을 60으로 설정 -->
@@ -36,7 +50,11 @@
         android:id="@+id/controlMinutesSeekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:max="60"
+        android:progressTint="@color/gray"
+        android:thumb="@drawable/ic_thumb"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
