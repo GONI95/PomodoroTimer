@@ -3,6 +3,7 @@ package sang.gondroid.pomodorotimer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.widget.SeekBar
 import sang.gondroid.pomodorotimer.databinding.ActivityMainBinding
 
@@ -22,9 +23,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() = with(binding) {
+
+        /*
+        Gon : onStopTrackingTouch()로 CountDownTimer 객체가 생성되고 updateSeekBar()를 통해
+              SeekBar의 Progress를 계속해서 업데이트 하는데 이 과정에서 updateSeekBar()의 작업이
+              onProgressChanged()를 호출하여 00초를 출력하게 되면서 값이 한번씩 57~58초로 바로 뜀
+
+              해결 방법 : fromUser를 통해 사용자의 이벤트인 경우에만 동작하도록 변경
+         */
         controlMinutesSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                updateRemainTime(progress * 60 * 1000L)
+                if (fromUser)
+                    updateRemainTime(progress * 60 * 1000L)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
