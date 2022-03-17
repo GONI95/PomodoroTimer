@@ -4,6 +4,7 @@ import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.widget.SeekBar
 import sang.gondroid.pomodorotimer.databinding.ActivityMainBinding
 
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Gon : 사운드는 특정 앱에서만 리소스를 가지는 것이 아님, 디바이스에서 가지는 사운드에 재생을 요청하기 때문에 앱에서 멈추도록 처리
-   override fun onPause() {
+    override fun onPause() {
         super.onPause()
 
         soundPoll.autoPause()
@@ -62,14 +63,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                currentCountDownTimer?.cancel()
-                currentCountDownTimer = null
+                stopCountDown()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 if (seekBar == null) return
 
-                startCountDown(seekBar)
+                if (seekBar.progress == 0) stopCountDown()
+                else startCountDown(seekBar)
             }
         })
 
@@ -87,13 +88,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                updateRemainTime(0)
-                updateSeekBar(0)
-
-                soundPoll.autoPause()
-                bellSoundId?.let {
-                    soundPoll.play(it, 1F, 1F, 0, 0, 1F)
-                }
+                completeCountDown()
             }
         }
 
@@ -120,12 +115,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun stopCountDown() {
+        currentCountDownTimer?.cancel()
+        currentCountDownTimer = null
+        soundPoll.autoPause()
+    }
 
     private fun completeCountDown() {
         updateRemainTime(0)
         updateSeekBar(0)
 
-        soundPoll.autoPause()
         bellSoundId?.let {
             soundPoll.play(it, 1F, 1F, 0, 0, 1F)
         }
